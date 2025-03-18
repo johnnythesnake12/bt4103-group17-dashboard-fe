@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // Import your views
 import HomeView from '../views/HomeView.vue';
-// import View2 from '../views/View2.vue';
+import MapView from '../views/MapView.vue';
 // import View3 from '../views/View3.vue';
 // import View4 from '../views/View4.vue';
 
@@ -12,11 +12,11 @@ const routes = [
     name: 'home',
     component: HomeView,
   },
-//   {
-//     path: '/view2',
-//     name: 'view2',
-//     component: View2,
-//   },
+  {
+    path: '/map',
+    name: 'map',
+    component: MapView,
+  },
 //   {
 //     path: '/view3',
 //     name: 'view3',

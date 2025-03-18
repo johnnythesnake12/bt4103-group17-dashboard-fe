@@ -25,7 +25,7 @@
       return {
         items: [
           { text: "Home", icon: "mdi-home", route: "/" },
-          { text: "View2", icon: "mdi-account", route: "/view2" },
+          { text: "Map", icon: "mdi-account", route: "/map" },
           { text: "View3", icon: "mdi-cog", route: "/view3" },
           { text: "View4", icon: "mdi-information", route: "/view4" },
         ],
