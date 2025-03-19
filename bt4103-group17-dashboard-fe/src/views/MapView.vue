@@ -1,11 +1,11 @@
-/* eslint-disable vue/multi-word-component-names */
+
 <template>
     <div id="map"></div>
 </template>
 
 <script>
 import mapboxgl from "mapbox-gl";
-// eslint-disable-next-line vue/multi-word-component-names
+
 export default {
   name: "MapView",
   mounted() {
