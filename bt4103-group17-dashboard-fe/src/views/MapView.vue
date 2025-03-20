@@ -1,11 +1,14 @@
 
 <template>
+  <div>
     <div id="map"></div>
+    <div id="hospitals"></div>
+  </div>
 </template>
 
 <script>
 import mapboxgl from "mapbox-gl";
-
+import axios from "axios";
 export default {
   name: "MapView",
   mounted() {
@@ -57,12 +60,52 @@ export default {
         },
       });
     });
+
+    // Initialize the hospitals map
+    const hospitalsMap = new mapboxgl.Map({
+      container: "hospitals",
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [105, 0],
+      zoom: 5,
+    });
+
+    hospitalsMap.on("load", () => {
+      // Fetch provider data from your API
+      axios.get("http://127.0.0.1:5000/providers")
+        .then(response => {
+          const providers = response.data;
+          providers.forEach(provider => {
+            // Ensure the longitude and latitude are valid numbers
+            const longitude = parseFloat(provider.longitude);
+            const latitude = parseFloat(provider.latitude);
+            console.log(provider.provider_name, longitude, latitude);
+            if (!isNaN(longitude) && !isNaN(latitude)) {
+
+              // Create a marker for each hospital
+              new mapboxgl.Marker({ color: "red" })
+                .setLngLat([longitude, latitude])
+                // .setPopup(
+                //   new mapboxgl.Popup({ offset: 25 }).setHTML(
+                //     `<h3>${provider.provider_name}</h3><p>${provider.address}</p>`
+                //   )
+                // )
+                .addTo(hospitalsMap);
+            }
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching providers:", error);
+        });
+    });
+
   },
+  
 };
 </script>
 <style scoped>
-#map {
+#map, #hospitals {
   width: 100%;
   height: 500px;
+  margin-bottom: 20px;
 }
 </style>
