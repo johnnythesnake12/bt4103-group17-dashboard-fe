@@ -5,13 +5,14 @@
         <canvas 
           v-if="loaded" 
           ref="chartRef"
+          style="height: 500px"
         />
         <div v-else>Loading...</div>
       </div>
     </div>
-</template>
+  </template>
   
-<script>
+  <script>
   import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement } from 'chart.js'
   
   ChartJS.register(
@@ -25,56 +26,144 @@
         loaded: false,
         chart: null,
         chartData: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          labels: [
+            '1st', '2nd', '3rd', '4th', '5th', '6th',
+            '7th', '8th', '9th', '10th', '11th', '12th'
+          ],
           datasets: [
             {
               label: 'Singapore',
-              borderColor: 'rgb(75, 192, 192)',
+              borderColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(75, 192, 192, 1)');
+                gradient.addColorStop(1, 'rgba(75, 192, 192, 0.5)');
+                return gradient;
+              },
               tension: 0.1,
-              data: [45, 55, 52, 65, 70, 80]
+              data: [20, 35, 45, 55, 65, 70, 75, 80, 78, 85, 88, 90], 
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              fill: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(75, 192, 192, 0.3)');
+                gradient.addColorStop(1, 'rgba(75, 192, 192, 0)');
+                return gradient;
+              }
             },
             {
               label: 'Malaysia',
-              borderColor: 'rgb(255, 99, 132)',
+              borderColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(255, 99, 132, 1)');
+                gradient.addColorStop(1, 'rgba(255, 99, 132, 0.5)');
+                return gradient;
+              },
               tension: 0.1,
-              data: [30, 50, 55, 58, 65, 75]
+              data: [15, 19, 32, 29, 35, 45, 50, 55, 52, 58, 62, 65], 
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              fill: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(255, 99, 132, 0.3)');
+                gradient.addColorStop(1, 'rgba(255, 99, 132, 0)');
+                return gradient;
+              }
             },
             {
               label: 'Indonesia',
-              borderColor: 'rgb(54, 162, 235)',
+              borderColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(54, 162, 235, 1)');
+                gradient.addColorStop(1, 'rgba(54, 162, 235, 0.5)');
+                return gradient;
+              },
               tension: 0.1,
-              data: [25, 45, 50, 52, 60, 70]
+              data: [10, 20, 25, 30, 35, 40, 45, 50, 48, 59, 55, 62], 
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              fill: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(54, 162, 235, 0.3)');
+                gradient.addColorStop(1, 'rgba(54, 162, 235, 0)');
+                return gradient;
+              }
             },
             {
               label: 'Thailand',
-              borderColor: 'rgb(255, 159, 64)',
+              borderColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(255, 159, 64, 1)');
+                gradient.addColorStop(1, 'rgba(255, 159, 64, 0.5)');
+                return gradient;
+              },
               tension: 0.1,
-              data: [35, 55, 62, 60, 70, 85]
+              data: [12, 22, 27, 32, 42, 37, 47, 52, 50, 59, 61, 63], 
+              pointHoverRadius: 6,
+              fill: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(255, 159, 64, 0.3)');
+                gradient.addColorStop(1, 'rgba(255, 159, 64, 0)');
+                return gradient;
+              }
             },
             {
               label: 'Vietnam',
-              borderColor: 'rgb(153, 102, 255)',
+              borderColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(153, 102, 255, 1)');
+                gradient.addColorStop(1, 'rgba(153, 102, 255, 0.5)');
+                return gradient;
+              },
               tension: 0.1,
-              data: [20, 40, 45, 48, 60, 80]
+              data: [8, 18, 25, 28, 33, 38, 43, 39, 45, 52, 57, 60], 
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              fill: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(153, 102, 255, 0.3)');
+                gradient.addColorStop(1, 'rgba(153, 102, 255, 0)');
+                return gradient;
+              }
             }
           ]
         },
         chartOptions: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 60,
+              right: 20,
+              bottom: 40,
+              left: 20
+            }
+          },
           plugins: {
             legend: {
-              position: 'top'
+              position: 'top',
+              padding: 20
             },
             title: {
               display: true,
-              text: 'Regional Kit Adoption Rates (%)'
+              text: 'Regional Kit Adoption Rates (%)',
+              padding: 20
             }
           },
           scales: {
             y: {
               beginAtZero: true,
               max: 100,
+              suggestedMax: 100,
               title: {
                 display: true,
                 text: 'Adoption Rate (%)'
@@ -139,18 +228,17 @@
       }
     }
   }
-</script>
+  </script>
   
-<style scoped>
+  <style scoped>
   .adoption-rate-container {
     padding: 20px;
   }
   
   .chart-wrapper {
     position: relative;
-    height: 400px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
   }
-</style>
+  </style>
