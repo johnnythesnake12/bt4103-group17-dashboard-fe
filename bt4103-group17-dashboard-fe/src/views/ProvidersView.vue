@@ -135,15 +135,15 @@ export default {
         }
       ],
       headers: [
-        { text: "ID", value: "provider_id" },
-        { text: "Name", value: "provider_name" },
-        { text: "Type", value: "provider_type" },
-        { text: "Address", value: "address" },
-        { text: "City", value: "city" },
-        { text: "State/Region", value: "state_region" },
-        { text: "Country", value: "country" },
-        { text: "Longitude", value: "longitude" },
-        { text: "Latitude", value: "latitude" }
+        { title: "ID", key: "provider_id" },
+        { title: "Name", key: "provider_name" },
+        { title: "Type", key: "provider_type" },
+        { title: "Address", key: "address" },
+        { title: "City", key: "city" },
+        { title: "State/Region", key: "state_region" },
+        { title: "Country", key: "country" },
+        { title: "Longitude", key: "longitude" },
+        { title: "Latitude", key: "latitude" }
       ]
     };
   }
