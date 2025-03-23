@@ -65,7 +65,7 @@ export default {
     const hospitalsMap = new mapboxgl.Map({
       container: "hospitals",
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [105, 0],
+      center: [105, 10],
       zoom: 5,
     });
 
@@ -84,11 +84,11 @@ export default {
               // Create a marker for each hospital
               new mapboxgl.Marker({ color: "red" })
                 .setLngLat([longitude, latitude])
-                // .setPopup(
-                //   new mapboxgl.Popup({ offset: 25 }).setHTML(
-                //     `<h3>${provider.provider_name}</h3><p>${provider.address}</p>`
-                //   )
-                // )
+                .setPopup(
+                  new mapboxgl.Popup({ offset: 25 }).setHTML(
+                    `<h3>${provider.provider_name}</h3><p>${provider.address}</p>`
+                  )
+                )
                 .addTo(hospitalsMap);
             }
           });
@@ -107,5 +107,6 @@ export default {
   width: 100%;
   height: 500px;
   margin-bottom: 20px;
+  position: relative;
 }
 </style>
