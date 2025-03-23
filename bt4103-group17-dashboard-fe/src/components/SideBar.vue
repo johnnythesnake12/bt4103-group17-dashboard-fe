@@ -28,6 +28,8 @@
           { text: "Map", icon: "mdi-account", route: "/map" },
           { text: "View3", icon: "mdi-cog", route: "/view3" },
           { text: "Financial Performance", icon: "mdi-cash", route: "/financial" },
+          { text: "Market Adoption", icon: "mdi-cash", route: "/adoptionrate" },
+
         ],
       };
     },

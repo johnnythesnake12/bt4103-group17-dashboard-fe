@@ -5,6 +5,7 @@ import HomeView from '../views/HomeView.vue';
 import MapView from '../views/MapView.vue';
 // import View3 from '../views/View3.vue';
 import FinancialPerformanceView from '../views/FinancialView.vue';
+import AdoptionRate from '../views/AdoptionRateView.vue'
 
 const routes = [
   {
@@ -26,6 +27,12 @@ const routes = [
     path: '/financial',
     name: 'financial',
     component: FinancialPerformanceView,
+  },
+
+  {
+    path: '/adoptionrate',
+    name: 'adoptionrate',
+    component: AdoptionRate,
   },
 ];
 
