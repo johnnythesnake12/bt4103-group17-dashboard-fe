@@ -27,7 +27,7 @@
           { text: "Home", icon: "mdi-home", route: "/" },
           { text: "Map", icon: "mdi-account", route: "/map" },
           { text: "View3", icon: "mdi-cog", route: "/view3" },
-          { text: "View4", icon: "mdi-information", route: "/view4" },
+          { text: "Financial Performance", icon: "mdi-cash", route: "/financial" },
         ],
       };
     },

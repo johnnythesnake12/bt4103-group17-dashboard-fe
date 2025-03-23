@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import MapView from '../views/MapView.vue';
 // import View3 from '../views/View3.vue';
-// import View4 from '../views/View4.vue';
+import FinancialPerformanceView from '../views/FinancialView.vue';
 
 const routes = [
   {
@@ -22,11 +22,11 @@ const routes = [
 //     name: 'view3',
 //     component: View3,
 //   },
-//   {
-//     path: '/view4',
-//     name: 'view4',
-//     component: View4,
-//   },
+  {
+    path: '/financial',
+    name: 'financial',
+    component: FinancialPerformanceView,
+  },
 ];
 
 const router = createRouter({
