@@ -30,6 +30,9 @@
           { text: "Financial Performance", icon: "mdi-cash", route: "/financial" },
           { text: "Market Adoption", icon: "mdi-cash", route: "/adoptionrate" },
 
+
+          { text: "Providers", icon: "mdi-hospital-building", route: "/providers" }
+
         ],
       };
     },
