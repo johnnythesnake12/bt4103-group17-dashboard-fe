@@ -44,7 +44,7 @@ export default {
     async fetchProviders() {
       try {
         const response = await axios.get("http://127.0.0.1:5000/providers");
-        this.providers = response.data; // Update the providers array with fetched data
+        this.providers = response.data; 
       } catch (error) {
         console.error("Error fetching providers:", error);
       }
