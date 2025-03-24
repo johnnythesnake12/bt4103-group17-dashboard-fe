@@ -36,7 +36,7 @@ const routes = [
     path: '/adoptionrate',
     name: 'adoptionrate',
     component: AdoptionRate,
-
+  },
   {
     path: '/providers',
     name: 'providers',
