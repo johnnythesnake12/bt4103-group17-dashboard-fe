@@ -70,32 +70,62 @@ export default {
     });
 
     hospitalsMap.on("load", () => {
-      // Fetch provider data from your API
-      axios.get("http://127.0.0.1:5000/providers")
-        .then(response => {
-          const providers = response.data;
-          providers.forEach(provider => {
-            // Ensure the longitude and latitude are valid numbers
-            const longitude = parseFloat(provider.longitude);
-            const latitude = parseFloat(provider.latitude);
-            console.log(provider.provider_name, longitude, latitude);
-            if (!isNaN(longitude) && !isNaN(latitude)) {
-
-              // Create a marker for each hospital
-              new mapboxgl.Marker({ color: "red" })
-                .setLngLat([longitude, latitude])
-                .setPopup(
-                  new mapboxgl.Popup({ offset: 25 }).setHTML(
-                    `<h3>${provider.provider_name}</h3><p>${provider.address}</p>`
-                  )
-                )
-                .addTo(hospitalsMap);
+    axios.get("http://127.0.0.1:5000/providers")
+      .then(response => {
+        const providers = response.data;
+        const geojson = {
+          type: "FeatureCollection",
+          features: providers.map(provider => ({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [parseFloat(provider.longitude), parseFloat(provider.latitude)]
+            },
+            properties: {
+              name: provider.provider_name,
+              address: provider.address
             }
-          });
-        })
-        .catch(error => {
-          console.error("Error fetching providers:", error);
+          })).filter(feature => !isNaN(feature.geometry.coordinates[0]) && !isNaN(feature.geometry.coordinates[1]))
+        };
+
+        hospitalsMap.addSource("hospitals", {
+          type: "geojson",
+          data: geojson
         });
+
+        hospitalsMap.addLayer({
+          id: "hospital-markers",
+          type: "circle",
+          source: "hospitals",
+          paint: {
+            "circle-radius": 6,
+            "circle-color": "red",
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "white"
+          }
+        });
+
+        hospitalsMap.on("click", "hospital-markers", (e) => {
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const name = e.features[0].properties.name;
+          const address = e.features[0].properties.address;
+
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(`<h3>${name}</h3><p>${address}</p>`)
+            .addTo(hospitalsMap);
+        });
+        hospitalsMap.on("mouseenter", "hospital-markers", () => {
+          hospitalsMap.getCanvas().style.cursor = "pointer";
+        });
+
+        hospitalsMap.on("mouseleave", "hospital-markers", () => {
+          hospitalsMap.getCanvas().style.cursor = "";
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching providers:", error);
+      });
     });
 
   },
