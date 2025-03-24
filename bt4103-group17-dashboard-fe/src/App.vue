@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-navigation-drawer permanent>
-      <SideBar />
-    </v-navigation-drawer>
+
+    <SideBar />
+
     <v-main>
       <router-view></router-view>
     </v-main>
