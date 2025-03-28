@@ -14,11 +14,17 @@
             </div>
         </div>
             <div class="financial-performance-view">
-                <h2>📊 Profit Margin Breakdown</h2>
-                <canvas id="profitChart"></canvas>
-
-                <h2 style="margin-top: 60px;">📈 Annual Revenue vs Operational Costs</h2>
-                <canvas id="growthChart"></canvas>
+                <div class = "financial-charts-container">
+                    <div class="profitChart">
+                        <canvas id="profitChart"></canvas>
+                    </div>
+                
+                    <div class="revenuegrowth">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                    
+                </div>
+            
             </div>
         </div>
     
@@ -252,7 +258,7 @@
                 options: {
                     responsive: true,
                     plugins: {
-                        title: { display: true, text: "Revenue vs Cost by Market" },
+                        title: { display: true, text: "📊 Profit Margin Breakdown" },
                         legend: { position: "bottom" }
                     },
                     scales: {
@@ -275,7 +281,7 @@
                 options: {
                     responsive: true,
                     plugins: {
-                        title: { display: true, text: "Annual Revenue vs Operational Costs" },
+                        title: { display: true, text: "📈Annual Revenue vs Operational Costs" },
                         legend: { position: "bottom" }
                     }
                 }
@@ -329,6 +335,7 @@
         position: relative;
         width: 100%;
         height: 400px; 
+      
     }
 
 
@@ -348,4 +355,22 @@
     .financial-performance-view {
         margin-top: 40px;
     }
+
+    .financial-charts-container {
+        display: flex; 
+        justify-content: space-between;
+        gap: 20px; 
+        margin-top: -10%; 
+        padding: 20px; 
+    }
+
+
+    .financial-charts-container canvas {
+        width: 45%; 
+        max-width: 400px; 
+        height: 250px !important; 
+    }
+
+
+
 </style>
