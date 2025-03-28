@@ -13,6 +13,7 @@
                 <div v-else class="loading-text">Loading...</div>
             </div>
         </div>
+            <h2 class="financial-title">Financial Performance Overview</h2>
             <div class="financial-performance-view">
                 <div class = "financial-charts-container">
                     <div class="profitChart">
@@ -312,8 +313,10 @@
 
     .header h1 {
         font-size: 20px; 
-        font-weight: bold; 
-        margin: 0; 
+        font-weight: 900; 
+        margin-left: 1%; 
+        margin-top: 0%; 
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
 
 
@@ -369,6 +372,16 @@
         width: 45%; 
         max-width: 400px; 
         height: 250px !important; 
+    }
+
+    .financial-title {
+        font-size: 15px;
+        font-weight: bold;
+        text-align: left;
+        margin-top: -5%;
+        margin-bottom: 10%;
+        margin-left: 3%;
+        color: rgba(0, 0, 0, 0.6);
     }
 
 
