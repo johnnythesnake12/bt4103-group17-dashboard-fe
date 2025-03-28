@@ -4,9 +4,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import MapView from '../views/MapView.vue';
 // import View3 from '../views/View3.vue';
-import FinancialPerformanceView from '../views/FinancialView.vue';
-import AdoptionRate from '../views/AdoptionRateView.vue'
+// import FinancialPerformanceView from '../views/FinancialView.vue';
+// import AdoptionRate from '../views/AdoptionRateView.vue'
 import ProvidersView from '@/views/ProvidersView.vue';
+import PostLaunchView from '@/views/PostLaunchView.vue';
 
 
 
@@ -26,7 +27,7 @@ const routes = [
 //     name: 'view3',
 //     component: View3,
 //   },
-  {
+  /*{
     path: '/financial',
     name: 'financial',
     component: FinancialPerformanceView,
@@ -36,11 +37,18 @@ const routes = [
     path: '/adoptionrate',
     name: 'adoptionrate',
     component: AdoptionRate,
-  },
+  },*/ 
+
   {
     path: '/providers',
     name: 'providers',
     component: ProvidersView,
+
+  },
+  {
+    path: '/postlaunch',
+    name: 'postlaunch',
+    component: PostLaunchView,
 
   },
 ];

@@ -1,26 +1,38 @@
 <template>
-    <div class="adoption-rate-container">
-      <h1>Regional Kit Adoption Rates</h1>
-      <div class="chart-wrapper">
-        <canvas 
-          v-if="loaded" 
-          ref="chartRef"
-          style="height: 500px"
-        />
-        <div v-else>Loading...</div>
-      </div>
-    </div>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>Post Product Insights</h1>
+        </div>
+        <div class="adoption-rate">
+            <div class="chart-container">
+                <canvas 
+                    v-if="loaded" 
+                    ref="chartRef"
+                    style="height: 400px;"
+                />
+                <div v-else class="loading-text">Loading...</div>
+            </div>
+        </div>
+            <div class="financial-performance-view">
+                <h2>📊 Profit Margin Breakdown</h2>
+                <canvas id="profitChart"></canvas>
+
+                <h2 style="margin-top: 60px;">📈 Annual Revenue vs Operational Costs</h2>
+                <canvas id="growthChart"></canvas>
+            </div>
+        </div>
+    
   </template>
   
   <script>
-  import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement } from 'chart.js'
+  import { Chart as ChartJS, BarController, BarElement, LineController, Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement } from 'chart.js'
   
   ChartJS.register(
-    Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement
+    BarController, BarElement, LineController, Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement
   )
   
   export default {
-    name: 'AdoptionRateView',
+    name: 'PostLaunchView',
     data() {
       return {
         loaded: false,
@@ -186,57 +198,154 @@
         }
       }
     },
+
     mounted() {
       setTimeout(() => {
         this.loaded = true
         this.$nextTick(() => {
           this.createChart()
+          this.createFinancialCharts()
         })
       }, 1000)
     },
+
     methods: {
-      createChart() {
-        const canvas = this.$refs.chartRef
-        if (!canvas) {
-          console.error('Canvas element not found')
-          return
-        }
+    //adoption rate chart 
+        createChart() {
+            const canvas = this.$refs.chartRef
+            if (!canvas) {
+                console.error('Canvas element not found')
+                return
+            }
   
-        const ctx = canvas.getContext('2d')
-        if (!ctx) {
-          console.error('Canvas context not available')
-          return
-        }
+            const ctx = canvas.getContext('2d')
+            if (!ctx) {
+                console.error('Canvas context not available')
+                return
+            }
   
-        // Create chart with error handling
-        try {
-          this.chart = new ChartJS(ctx, {
-            type: 'line',
-            data: this.chartData,
-            options: this.chartOptions
-          })
-        } catch (error) {
-          console.error('Error creating chart:', error)
+            try {
+            this.chart = new ChartJS(ctx, {
+                type: 'line',
+                data: this.chartData,
+                options: this.chartOptions
+            })
+            } catch (error) {
+            console.error('Error creating chart:', error)
+            }
+        },
+    
+
+        //financial charts
+        createFinancialCharts() {
+            const profitCtx = document.getElementById("profitChart").getContext('2d');
+            new ChartJS(profitCtx, {
+                type: "bar",
+                data: {
+                    labels: ["Singapore", "Malaysia", "Thailand", "Vietnam", "Indonesia"],
+                    datasets: [
+                        { label: "Revenue", data: [100, 85, 95, 90, 70], backgroundColor: "#4CAF50" },
+                        { label: "Cost", data: [60, 55, 65, 50, 40], backgroundColor: "#F44336" }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: "Revenue vs Cost by Market" },
+                        legend: { position: "bottom" }
+                    },
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true, beginAtZero: true }
+                    }
+                }
+            });
+
+            const growthCtx = document.getElementById("growthChart").getContext('2d');
+            new ChartJS(growthCtx, {
+                type: "line",
+                data: {
+                    labels: ["Y1", "Y2", "Y3", "Y4", "Y5"],
+                    datasets: [
+                        { label: "Annual Revenue", data: [120, 150, 170, 190, 220], borderColor: "#36A2EB", fill: false },
+                        { label: "Operational Costs", data: [100, 120, 130, 140, 160], borderColor: "#FF6384", fill: false }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: "Annual Revenue vs Operational Costs" },
+                        legend: { position: "bottom" }
+                    }
+                }
+            });
         }
-      }
     },
+
+
     beforeUnmount() {
-      if (this.chart) {
-        this.chart.destroy()
-      }
+        if (this.chart) {
+        this.chart.destroy();
+        }
     }
-  }
-  </script>
+};
+
   
-  <style scoped>
-  .adoption-rate-container {
-    padding: 20px;
-  }
+</script>
   
-  .chart-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  </style>
+<style scoped>
+
+    .header {
+        display: flex;
+        align-items: flex-start; 
+        justify-content: flex-start; 
+        padding: 16px;
+        margin-top: -40px;
+    }
+
+    .header h1 {
+        font-size: 20px; 
+        font-weight: bold; 
+        margin: 0; 
+    }
+
+
+    .adoption-rate-container {
+        padding: 20px;
+    }
+
+  
+    .adoption-rate {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        margin-top: -10%;
+
+    }
+
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 400px; 
+    }
+
+
+    
+    .loading-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 18px;
+        color: #888;
+        font-weight: bold;
+    }
+
+
+
+    .financial-performance-view {
+        margin-top: 40px;
+    }
+</style>
