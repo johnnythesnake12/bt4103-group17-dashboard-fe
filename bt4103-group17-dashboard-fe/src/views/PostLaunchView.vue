@@ -307,8 +307,8 @@
         display: flex;
         align-items: flex-start; 
         justify-content: flex-start; 
-        padding: 16px;
-        margin-top: -40px;
+        padding: 2%;
+        margin-top: -7%;
     }
 
     .header h1 {
@@ -321,14 +321,14 @@
 
 
     .adoption-rate-container {
-        padding: 20px;
+        padding: 2.5%;
     }
 
   
     .adoption-rate {
         position: relative;
         width: 100%;
-        max-width: 1200px;
+        max-width: 85;
         margin: 0 auto;
         margin-top: -10%;
 
@@ -337,7 +337,7 @@
     .chart-container {
         position: relative;
         width: 100%;
-        height: 400px; 
+        height: 40%; 
       
     }
 
@@ -356,21 +356,21 @@
 
 
     .financial-performance-view {
-        margin-top: 40px;
+        margin-top: 5%;
     }
 
     .financial-charts-container {
         display: flex; 
         justify-content: space-between;
-        gap: 20px; 
+        gap: 1.67%; 
         margin-top: -10%; 
-        padding: 20px; 
+        padding: 1.67%; 
     }
 
 
     .financial-charts-container canvas {
         width: 45%; 
-        max-width: 400px; 
+        max-width: 100%; 
         height: 250px !important; 
     }
 
