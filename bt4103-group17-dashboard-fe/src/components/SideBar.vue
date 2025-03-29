@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer app width="260" class="sidebar">
+    <v-navigation-drawer app width="260" class="sidebar" permanent>
       <v-list>
         <v-list-item
           v-for="(item, index) in items"
