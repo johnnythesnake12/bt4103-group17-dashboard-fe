@@ -1,35 +1,29 @@
 <template>
-    <div class="dashboard-container">
-        <div class="header">
-            <h1>Post Product Insights</h1>
-        </div>
-        <div class="adoption-rate">
-            <div class="chart-container">
-                <canvas 
-                    v-if="loaded" 
-                    ref="chartRef"
-                    style="height: 400px;"
-                />
-                <div v-else class="loading-text">Loading...</div>
-            </div>
-        </div>
-            <h2 class="financial-title">Financial Performance Overview</h2>
-            <div class="financial-performance-view">
-                <div class = "financial-charts-container">
-                    <div class="profitChart">
-                        <canvas id="profitChart"></canvas>
-                    </div>
-                
-                    <div class="revenuegrowth">
-                        <canvas id="growthChart"></canvas>
-                    </div>
-                    
-                </div>
-            
-            </div>
-        </div>
+  <div class="dashboard-container">
+    <div class="header">
+      <h1>Post Product Insights</h1>
+    </div>
     
-  </template>
+
+    <div class="adoption-rate">
+      <div class="chart-container">
+        <canvas v-if="loaded" ref="chartRef"/>
+        <div v-else class="loading-text">Loading...</div>
+      </div>
+    </div>
+    
+
+    <h2 class="financial-title">Financial Performance Overview</h2>
+    <div class="financial-charts-container">
+      <div class="chart-wrapper">
+        <canvas id="profitChart"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="growthChart"></canvas>
+      </div>
+    </div>
+  </div>
+</template>
   
   <script>
   import { Chart as ChartJS, BarController, BarElement, LineController, Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement } from 'chart.js'
@@ -161,9 +155,9 @@
           maintainAspectRatio: false,
           layout: {
             padding: {
-              top: 60,
+              top: 20,
               right: 20,
-              bottom: 40,
+              bottom: 20,
               left: 20
             }
           },
@@ -302,88 +296,70 @@
 </script>
   
 <style scoped>
+.dashboard-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
-    .header {
-        display: flex;
-        align-items: flex-start; 
-        justify-content: flex-start; 
-        padding: 2%;
-        margin-top: -7%;
-    }
-
-    .header h1 {
-        font-size: 20px; 
-        font-weight: 900; 
-        margin-left: 1%; 
-        margin-top: 0%; 
-        text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    }
+.header h1 {
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
 
 
-    .adoption-rate-container {
-        padding: 2.5%;
-    }
+.adoption-rate {
+  width: 100%;
+  margin-bottom: 30px;
+}
 
+.chart-container {
+  width: 100%;
+  height: 400px;
+}
+
+
+.financial-title {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.financial-charts-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+
+}
+
+.chart-wrapper {
+  flex: 1;
+  display: flex;           /* Add this */
+  justify-content: center; /* Horizontally center */
+  align-items: center;     /* Vertically center */
+  height: 300px;
+
+
+  padding: 15px;
+}
+
+/* Make canvas fit container */
+.chart-wrapper canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+@media (max-width: 768px) {
+  .financial-charts-container {
+    flex-direction: column;
+  }
   
-    .adoption-rate {
-        position: relative;
-        width: 100%;
-        max-width: 85;
-        margin: 0 auto;
-        margin-top: -10%;
+  .chart-wrapper {
+    height: 250px;
 
-    }
-
-    .chart-container {
-        position: relative;
-        width: 100%;
-        height: 40%; 
-      
-    }
-
-
-    
-    .loading-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 18px;
-        color: #888;
-        font-weight: bold;
-    }
-
-
-
-    .financial-performance-view {
-        margin-top: 5%;
-    }
-
-    .financial-charts-container {
-        display: flex; 
-        justify-content: space-between;
-        gap: 1.67%; 
-        margin-top: -10%; 
-        padding: 1.67%; 
-    }
-
-
-    .financial-charts-container canvas {
-        width: 45%; 
-        max-width: 100%; 
-        height: 250px !important; 
-    }
-
-    .financial-title {
-        font-size: 15px;
-        font-weight: bold;
-        text-align: left;
-        margin-top: -5%;
-        margin-bottom: 10%;
-        margin-left: 3%;
-        color: rgba(0, 0, 0, 0.6);
-    }
-
-
-
+  }
+}
 </style>
