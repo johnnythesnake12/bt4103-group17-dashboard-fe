@@ -336,16 +336,16 @@
 
 .chart-wrapper {
   flex: 1;
-  display: flex;           /* Add this */
-  justify-content: center; /* Horizontally center */
-  align-items: center;     /* Vertically center */
+  display: flex;           
+  justify-content: center; 
+  align-items: center;     
   height: 300px;
 
 
   padding: 15px;
 }
 
-/* Make canvas fit container */
+
 .chart-wrapper canvas {
   max-width: 100%;
   max-height: 100%;
