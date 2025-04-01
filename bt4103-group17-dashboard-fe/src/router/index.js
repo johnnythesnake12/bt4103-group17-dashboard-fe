@@ -7,6 +7,7 @@ import MapView from '../views/MapView.vue';
 import FinancialPerformanceView from '../views/FinancialView.vue';
 import AdoptionRate from '../views/AdoptionRateView.vue'
 import ProvidersView from '@/views/ProvidersView.vue';
+import MarketAnalysisView from '../views/MarketAnalysisView.vue';
 
 
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+  },
+  {
+    path: '/marketanalysis',
+    name: 'marketanalysis',
+    component: MarketAnalysisView,
   },
   {
     path: '/map',
