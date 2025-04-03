@@ -32,8 +32,9 @@ export default {
         { title: "City", key: "city" },
         { title: "State/Region", key: "state_region" },
         { title: "Country", key: "country" },
-        { title: "Longitude", key: "longitude" },
-        { title: "Latitude", key: "latitude" }
+        { title: "Onboarding Stage", key: "onboarding_stage" },
+        { title: "First Login", key: "first_login" },
+        { title: "Last Usage", key: "last_active" }
       ]
     };
   },
@@ -44,7 +45,8 @@ export default {
     async fetchProviders() {
       try {
         const response = await axios.get("http://127.0.0.1:5000/providers");
-        this.providers = response.data; 
+        this.providers = response.data;
+        console.log(this.providers) 
       } catch (error) {
         console.error("Error fetching providers:", error);
       }
