@@ -27,7 +27,7 @@
       </div>
       <div class="revenue-annotation">
         <div class="revenue-text">
-          <strong>Revenue Potential:</strong>
+          <strong>Revenue Potential: $</strong>
           {{ revenueText[selectedFunnelMarket] }}
         </div>
       </div>
@@ -36,34 +36,17 @@
   
   <script>
   import ApexChart from 'vue3-apexcharts';
-  
+  import axios from "axios";
   export default {
     name: 'MarketSizingFunnel',
     components: { apexchart: ApexChart },
     data() {
       return {
-        selectedFunnelMarket: 'Malaysia',
-        funnelMarkets: ['Malaysia', 'Indonesia', 'Thailand', 'Singapore', 'Vietnam'],
-        funnelDataMap: {
-          Malaysia: [31028030, 780000, 370000, 296000],
-          Indonesia: [275000000, 20000000, 3000000, 150000],
-          Thailand: [70000000, 6280000, 945000, 472500],
-          Singapore: [5870750, 1990185, 522497, 417998],
-          Vietnam: [97000000, 4330000, 649500, 324750]
-        },
-        revenueText: {
-          Malaysia: '$230,400',
-          Indonesia: '$3.2M',
-          Thailand: '$1.13M',
-          Singapore: '$316,040',
-          Vietnam: '$779,400'
-        },
-        funnelSeries: [
-          {
-            name: 'Market Sizing (Malaysia)',
-            data: [31028030, 780000, 370000, 296000]
-          }
-        ],
+        selectedFunnelMarket: '',
+        funnelMarkets: [], // dynamically populated
+        funnelDataMap: {}, // fetched from API
+        revenueText: {}, // you can still keep this static or fetch it from backend
+        funnelSeries: [],
         funnelOptions: {
           chart: {
             type: 'bar',
@@ -117,14 +100,60 @@
     },
     watch: {
       selectedFunnelMarket(newMarket) {
-        this.funnelSeries = [
-          {
-            name: `Market Sizing (${newMarket})`,
-            data: this.funnelDataMap[newMarket]
-          }
-        ];
+        this.updateChartData(newMarket);
       }
+    },
+    methods: {
+      async fetchCountryData() {
+        try {
+          const response = await axios.get('http://127.0.0.1:5000/countries');
+          const data = response.data;
+          const map = {};
+          const markets = [];
+          console.log(response)
+          data.forEach(country => {
+            map[country.country] = [
+              country.total_population,
+              country.diabetic_population,
+              country.vtdr_cases,
+              country.target_population
+            ];
+            markets.push(country.country);
+            this.revenueText[country.country] = country.revenue;
+          });
+
+          this.funnelDataMap = map;
+          this.funnelMarkets = markets;
+
+
+          if (!this.funnelMarkets.includes(this.selectedFunnelMarket)) {
+            this.selectedFunnelMarket = this.funnelMarkets[0];
+          }
+
+          // Set initial series
+          this.updateChartData(this.selectedFunnelMarket);
+        } catch (error) {
+          console.error('Error fetching country data:', error);
+        }
+
+      },
+      updateChartData(market) {
+        if (this.funnelDataMap[market]) {
+          this.funnelSeries = [
+            {
+              name: `Market Sizing (${market})`,
+              data: this.funnelDataMap[market]
+            }
+          ];
+        }
+      }
+    },
+    mounted() {
+      this.fetchCountryData();
+      console.log(this.funnelDataMap)
     }
+  
+    
   };
   </script>
   
