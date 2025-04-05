@@ -6,6 +6,7 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import 'vuetify/styles' // Ensure Vuetify styles are loaded
 import '@mdi/font/css/materialdesignicons.css'; 
+import 'funnel-graph-js/dist/css/main.min.css';
 
 const vuetify = createVuetify({
     components,
