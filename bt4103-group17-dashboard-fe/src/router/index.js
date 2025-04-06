@@ -23,16 +23,6 @@ const routes = [
     component: MarketAnalysisView,
   },
   {
-    path: '/map',
-    name: 'map',
-    component: MapView,
-  },
-//   {
-//     path: '/view3',
-//     name: 'view3',
-//     component: View3,
-//   },
-  {
     path: '/financial',
     name: 'financial',
     component: FinancialPerformanceView,
