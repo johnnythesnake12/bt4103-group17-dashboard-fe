@@ -24,7 +24,8 @@
 import axios from 'axios';
 import { Chart } from 'chart.js/auto';
 import { FunnelController, TrapezoidElement } from 'chartjs-chart-funnel';
-
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+Chart.register(ChartDataLabels);
 Chart.register(FunnelController, TrapezoidElement);
 
 export default {
@@ -113,44 +114,78 @@ export default {
     }
   },
   renderFunnelChart(funnelData) {
-    const ctx = document.getElementById("funnelChart").getContext("2d");
+  const ctx = document.getElementById("funnelChart").getContext("2d");
 
-    if (this.funnelChart) {
-      this.funnelChart.destroy();
-    }
+  if (this.funnelChart) {
+    this.funnelChart.destroy();
+  }
 
-    const baseValue = funnelData[0].value || 1;
+  const baseValue = funnelData.reduce((sum, e) => sum + e.value, 0) || 1;
 
-    this.funnelChart = new Chart(ctx, {
-      type: 'funnel',
-      data: {
-        labels: funnelData.map(e => e.label),
-        datasets: [{
-          label: 'Onboarding Funnel',
-          data: funnelData.map(e => e.value),
-          backgroundColor: funnelData.map(e => e.color)
-        }]
+  const datasetLabels = funnelData.map(e => {
+    const percent = ((e.value / baseValue) * 100).toFixed(1);
+    return `${e.label}\n${percent}%`;
+  });
+
+  this.funnelChart = new Chart(ctx, {
+    type: 'funnel',
+    data: {
+      labels: datasetLabels,
+      datasets: [{
+        label: 'Onboarding Funnel',
+        data: funnelData.map(e => e.value),
+        backgroundColor: funnelData.map(e => e.color),
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 30,
+          bottom: 30,
+          left: 30,
+          right: 30
+        }
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          title: {
-            display: true,
-            text: 'Provider Onboarding Funnel'
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const value = context.raw;
-                const percent = ((value / baseValue) * 100).toFixed(1);
-                return `${value} providers (${percent}%)`;
-              }
-            }
-          }
+      plugins: {
+  legend: { display: false },
+  title: {
+    display: false,
+  },
+  tooltip: {
+    callbacks: {
+      label: function(context) {
+        const value = context.raw;
+        const percent = ((value / baseValue) * 100).toFixed(1);
+        return `${value} providers (${percent}%)`;
+      }
+    }
+  },
+  datalabels: {
+    color: 'black',
+    font: {
+      size: 12,
+      weight: 'bold'
+    },
+    formatter: function(value, context) {
+      const label = funnelData[context.dataIndex].label;
+      const percent = ((value / baseValue) * 100).toFixed(1);
+      return `${label}\n${percent}%`;
+    },
+    align: 'end',
+    anchor: 'end',
+    clamp: true
+  }
+},
+      elements: {
+        trapezoid: {
+          borderColor: 'white',
+          borderWidth: 1
         }
       }
-    });
+    }
+  });
 }
 }
 }
