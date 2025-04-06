@@ -1,4 +1,4 @@
-
+<!-- 
 <template>
   <div>
     <div id="map"></div>
@@ -12,7 +12,7 @@ import axios from "axios";
 export default {
   name: "MapView",
   mounted() {
-    mapboxgl.accessToken = "pk.eyJ1Ijoiam9obm55dGhlc25ha2UxMiIsImEiOiJjbThlbWk2NjUwMzN5MmtvOWZoMXlyNGhlIn0.v6H0va5rhqStvQrriP-J6Q"; // Replace with your token
+   
 
     const map = new mapboxgl.Map({
       container: "map",
@@ -139,4 +139,4 @@ export default {
   margin-bottom: 20px;
   position: relative;
 }
-</style>
+</style> -->
