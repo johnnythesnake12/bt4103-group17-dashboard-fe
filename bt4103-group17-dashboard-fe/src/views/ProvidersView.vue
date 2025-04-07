@@ -55,7 +55,7 @@ export default {
   methods: {
     async fetchProviders() {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/providers");
+        const response = await axios.get("https://bt4103-group17-dashboard-flask-be.onrender.com/providers");
         this.providers = response.data;
       } catch (error) {
         console.error("Error fetching providers:", error);
@@ -63,7 +63,7 @@ export default {
     },
     async fetchFunnelSummary() {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/providers?view=summary");
+      const response = await axios.get("https://bt4103-group17-dashboard-flask-be.onrender.com/providers?view=summary");
       const rawData = response.data;
 
       // Ensure full stage order even if values are missing
