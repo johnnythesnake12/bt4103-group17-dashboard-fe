@@ -106,7 +106,7 @@
     methods: {
       async fetchCountryData() {
         try {
-          const response = await axios.get('http://127.0.0.1:5000/countries');
+          const response = await axios.get('https://bt4103-group17-dashboard-flask-be.onrender.com/countries');
           const data = response.data;
           const map = {};
           const markets = [];
