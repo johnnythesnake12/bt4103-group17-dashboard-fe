@@ -22,12 +22,9 @@ export default {
 
 <style scoped>
 .market-analysis-view {
-  max-width: 65%;
-  margin: 0 auto;
-  padding: 40px 20px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  max-width: 80%;
+  margin: auto auto;
   text-align: center;
 }
 </style>
