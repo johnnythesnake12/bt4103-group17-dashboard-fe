@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>📈 Market Analysis: Diabetic Population, GDP per Capita (PPP), Digital Adoption Index</h2>
+    <h2>Country-Wise Market Analysis: Diabetic Population, GDP per Capita (PPP), Digital Adoption Index</h2>
     <canvas id="marketBubbleChart"></canvas>
   </div>
 </template>
@@ -9,117 +9,170 @@
 import { Chart, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import axios from 'axios';
 
 Chart.register(...registerables, ChartDataLabels, annotationPlugin);
 
 export default {
   name: 'MarketOverview',
-  mounted() {
-    this.$nextTick(() => {
-      const scaleRadius = (pop) => Math.sqrt(pop) / 60;
-      const originalPop = (scale) => Math.round((scale * 60) ** 2);
-      const ctx = document.getElementById("marketBubbleChart");
-      if (!ctx) return;
+  data() {
+    return {
+      chart: null,
+      colorMap: {
+        Singapore: '#4CAF50',
+        Malaysia: '#2196F3',
+        Vietnam: '#FFC107',
+        Thailand: '#9C27B0',
+        Indonesia: '#F44336'
+      }
+    };
+  },
+  methods: {
+    scaleRadius(pop) {
+      return Math.sqrt(pop) / 60;
+    },
+    originalPop(scale) {
+      return Math.round((scale * 60) ** 2);
+    },
+    async drawChart() {
+      try {
+        const response = await axios.get('https://bt4103-group17-dashboard-flask-be.onrender.com/countries');
+        const data = response.data;
 
-      new Chart(ctx, {
-        type: "bubble",
-        data: {
-          datasets: [
-            { label: "Singapore", data: [{ x: 141553, y: 0.87, r: scaleRadius(310000) }], backgroundColor: "#4CAF50" },
-            { label: "Malaysia", data: [{ x: 43100, y: 0.72, r: scaleRadius(3730000) }], backgroundColor: "#2196F3" },
-            { label: "Vietnam", data: [{ x: 13492, y: 0.57, r: scaleRadius(4330000) }], backgroundColor: "#FFC107" },
-            { label: "Thailand", data: [{ x: 26416, y: 0.67, r: scaleRadius(6280000) }], backgroundColor: "#9C27B0" },
-            { label: "Indonesia", data: [{ x: 14073, y: 0.49, r: scaleRadius(20030000) }], backgroundColor: "#F44336" }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: "Key Market Information by Country",
-              font: { size: 18, weight: "bold" },
-              padding: { top: 10, bottom: 20 }
-            },
-            legend: { position: "bottom", labels: { font: { size: 14 }, boxWidth: 20 } },
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  const { x, y, r } = context.raw;
-                  const country = context.dataset.label;
-                  const pop = originalPop(r);
-                  return `${country}: GDP per capita $${x.toLocaleString()}, DAI ${y}, Diabetic Population: ${pop.toLocaleString()}`;
-                }
-              }
-            },
+        const ctx = document.getElementById("marketBubbleChart");
+        if (!ctx) return;
+
+        // Reorder countries to bring Vietnam to the front (last in array)
+        const countryOrder = ['Singapore', 'Malaysia', 'Thailand', 'Indonesia', 'Vietnam'];
+
+        const datasets = countryOrder.map((countryName) => {
+          const country = data.find(c => c.country === countryName);
+          if (!country) return null;
+
+          const diabeticPop = country.diabetic_metillus_population;
+
+          return {
+            label: country.country,
+            data: [{
+              x: country.ppp,
+              y: country.dai,
+              r: Math.max(this.scaleRadius(diabeticPop), 5)
+            }],
+            backgroundColor: this.colorMap[country.country] || '#90A4AE',
             datalabels: {
-              color: "#ffffff",
-              font: { weight: "bold" },
-              formatter: function (value) {
-                const pop = originalPop(value.r);
-                return pop >= 1_000_000 ? `${(pop / 1_000_000).toFixed(1)}M` : `${(pop / 1000).toFixed(0)}K`;
-              }
-            },
-            annotation: {
-              annotations: {
-                incomeThreshold: {
-                  type: "line",
-                  scaleID: "x",
-                  value: 47727,
-                  borderColor: "gray",
-                  borderDash: [6, 6],
-                  borderWidth: 1,
-                  label: {
-                    display: true,
-                    content: "Average GDP per capita: $47,727",
-                    position: "start",
-                    font: { style: "italic", size: 10 }
-                  }
-                },
-                daiThreshold: {
-                  type: "line",
-                  scaleID: "y",
-                  value: 0.66,
-                  borderColor: "gray",
-                  borderDash: [6, 6],
-                  borderWidth: 1,
-                  label: {
-                    display: true,
-                    content: "Average DAI: 0.66",
-                    position: "end",
-                    font: { style: "italic", size: 10 }
+              color: country.country === 'Singapore' ? '#000000' : '#ffffff',
+              font: { size: 16, weight: "bold" }
+            }
+          };
+        }).filter(Boolean);
+
+        this.chart = new Chart(ctx, {
+          type: "bubble",
+          data: { datasets },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: "Key Market Information by Country",
+                font: { size: 20, weight: "bold" },
+              },
+              legend: {
+                position: "bottom",
+                labels: { font: { size: 16 }, boxWidth: 20 }
+              },
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    const { x, y, r } = context.raw;
+                    const country = context.dataset.label;
+                    const pop = this.originalPop(r);
+                    return `${country}: GDP per capita $${x.toLocaleString()}, DAI ${y}, Diabetic Population: ${pop.toLocaleString()}`;
                   }
                 }
+              },
+              datalabels: {
+                formatter: (value) => {
+                  const pop = this.originalPop(value.r);
+                  return pop >= 1_000_000
+                    ? `${(pop / 1_000_000).toFixed(1)}M`
+                    : `${(pop / 1000).toFixed(0)}K`;
+                }
+              },
+              annotation: {
+                annotations: {
+                  incomeThreshold: {
+                    type: "line",
+                    scaleID: "x",
+                    value: 47727,
+                    borderColor: "gray",
+                    borderDash: [6, 6],
+                    borderWidth: 1,
+                    label: {
+                      display: true,
+                      content: "Average GDP per capita: $47,727",
+                      position: "start",
+                      font: { style: "italic", size: 14 }
+                    }
+                  },
+                  daiThreshold: {
+                    type: "line",
+                    scaleID: "y",
+                    value: 0.66,
+                    borderColor: "gray",
+                    borderDash: [6, 6],
+                    borderWidth: 1,
+                    label: {
+                      display: true,
+                      content: "Average DAI: 0.66",
+                      position: "end",
+                      font: { style: "italic", size: 14 }
+                    }
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                min: 0,
+                max: 150000,
+                title: {
+                  display: true,
+                  text: "GDP per Capita, PPP (USD)",
+                  font: { size: 18 }
+                },
+                ticks: { stepSize: 37500, font: { size: 12 } },
+                grid: { color: "#eee" }
+              },
+              y: {
+                min: 0.35,
+                max: 0.9,
+                title: {
+                  display: true,
+                  text: "Digital Adoption Index (DAI)",
+                  font: { size: 18 }
+                },
+                ticks: { stepSize: 0.25, font: { size: 12 } },
+                grid: { color: "#eee" }
               }
             }
           },
-          scales: {
-            x: {
-              min: 0,
-              max: 150000,
-              title: { display: true, text: "GDP per Capita, PPP (USD)", font: { size: 14 } },
-              ticks: { stepSize: 37500, font: { size: 12 } },
-              grid: { color: "#eee" }
-            },
-            y: {
-              min: 0.35,
-              max: 0.9,
-              title: { display: true, text: "Digital Adoption Index (DAI)", font: { size: 14 } },
-              ticks: { stepSize: 0.25, font: { size: 12 } },
-              grid: { color: "#eee" }
-            }
-          }
-        },
-        plugins: [ChartDataLabels]
-      });
-    });
+          plugins: [ChartDataLabels]
+        });
+
+      } catch (error) {
+        console.error("Failed to load chart data:", error);
+      }
+    }
+  },
+  mounted() {
+    this.drawChart();
   }
 };
 </script>
 
 <style scoped>
 canvas {
-  padding-top: 20px;
   max-width: 100%;
 }
 </style>
