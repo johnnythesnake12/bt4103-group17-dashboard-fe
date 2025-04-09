@@ -1,8 +1,8 @@
 <template>
     <div style="margin-top: 60px;">
-      <h3>💰 Pricing Model</h3>
+      <h2>Pricing Model</h2>
   
-      <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
         <button
           @click="selectMarket('Equation')"
           :class="['market-tab', { active: selectedMarket === 'Equation' }]"
@@ -28,7 +28,7 @@
       </div>
   
       <div v-else-if="inputParams[selectedMarket]" style="margin-top: 30px;">
-        <h4 style="margin-bottom: 10px;">Input Parameters – {{ selectedMarket }}</h4>
+        <h4 style="margin-bottom: 10px;">Input Variables – {{ selectedMarket }}</h4>
         <div style="overflow-x: auto;">
           <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
             <thead>

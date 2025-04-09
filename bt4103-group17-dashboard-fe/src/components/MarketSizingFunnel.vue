@@ -1,6 +1,6 @@
 <template>
     <div style="margin-top: 60px;">
-      <h3 class="funnel-title">📊 Market Sizing Funnel – {{ selectedFunnelMarket }}</h3>
+      <h2 class="funnel-title">Market Sizing Funnel – {{ selectedFunnelMarket }}</h2>
       <div class="funnel-header-top-left">
         <div class="dropdown-wrapper inline">
           <label for="market-select">Market:</label>
@@ -64,14 +64,22 @@
             enabled: true,
             formatter: function (val, opt) {
               const stage = opt.w.globals.labels[opt.dataPointIndex];
-              return `${stage}: ${val >= 1e6 ? (val / 1e6).toFixed(1) + 'M' : val.toLocaleString()}`;
+              const data = opt.w.config.series[0].data;
+              const top = data[0];
+              const percentage = ((val / top) * 100).toFixed(1);
+              const formattedVal = val >= 1e6 ? (val / 1e6).toFixed(1) + 'M' : val.toLocaleString();
+              return `${stage}: ${percentage}% (${formattedVal})`;
             },
             style: {
-              fontSize: '12px',
-              colors: ['#fff']
+              fontSize: '14px',
+              fontWeight: '600',
+              colors: ['#000'] // white text so it stays readable on colored bars
             },
-            dropShadow: {
-              enabled: true
+            offsetX: 0, // keep labels centered horizontally in bar
+            textAnchor: 'middle', // default to center
+            distributed: true,
+            background: {
+              enabled: false
             }
           },
           xaxis: {
@@ -86,7 +94,7 @@
             }
           },
           fill: {
-            colors: ['#1976D2', '#1E88E5', '#2196F3', '#42A5F5', '#64B5F6']
+            colors: ['#2196F3', '#42A5F5', '#64B5F6', '#90CAF9']
           },
           title: {
             text: '',
@@ -114,9 +122,9 @@
           data.forEach(country => {
             map[country.country] = [
               country.total_population,
-              country.diabetic_population,
-              country.vtdr_cases,
-              country.target_population
+              country.total_population * country.diabetes_mellitus_prevalence_rate,
+              country.diabetic_metillus_population * country.vtdr_prevalence_rate_among_diabetics,
+              country.diabetic_metillus_population * country.vtdr_prevalence_rate_among_diabetics * 0.8
             ];
             markets.push(country.country);
             this.revenueText[country.country] = country.revenue;

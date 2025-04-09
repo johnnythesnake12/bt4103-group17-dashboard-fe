@@ -232,13 +232,16 @@
   
   <style scoped>
   .adoption-rate-container {
-    padding: 20px;
+    padding: 40px;
+    max-width: 80%;
+    margin: auto auto;
+    text-align: center;
   }
   
-  .chart-wrapper {
+  /* .chart-wrapper {
     position: relative;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-  }
+  } */
   </style>
