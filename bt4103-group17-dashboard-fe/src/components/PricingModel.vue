@@ -66,17 +66,13 @@
   </template>
   
   <script>
+  import axios from "axios";
   export default {
     name: 'PricingModel',
     data() {
       return {
         selectedMarket: 'Malaysia',
         inputParams: {
-          Malaysia: { Cs: 450, Ts: 1 / 3, Rr: 0.2, Pd: 0.156, Pvt: 0.1, Vt: 1500, gamma: 0.5 },
-          Indonesia: { Cs: 320, Ts: 1 / 3, Rr: 0.18, Pd: 0.14, Pvt: 0.09, Vt: 1200000, gamma: 0.4 },
-          Thailand: { Cs: 400, Ts: 1 / 3, Rr: 0.21, Pd: 0.15, Pvt: 0.11, Vt: 1300, gamma: 0.52 },
-          Singapore: { Cs: 600, Ts: 1 / 3, Rr: 0.25, Pd: 0.13, Pvt: 0.1, Vt: 1800, gamma: 0.6 },
-          Vietnam: { Cs: 300, Ts: 1 / 3, Rr: 0.19, Pd: 0.16, Pvt: 0.1, Vt: 1000000, gamma: 0.48 }
         }
       };
     },
@@ -97,7 +93,32 @@
         const vtx = this.calcVtx(country);
         const gamma = this.inputParams[country].gamma;
         return (vop + vtx) * gamma;
+      },
+      async fetchInputParams() {
+        try {
+          const response = await axios.get('https://bt4103-group17-dashboard-flask-be.onrender.com/countries');
+          const apiData = response.data;  
+
+          const formatted = {};
+          apiData.forEach(row => {
+            formatted[row.country] = {
+              Cs: row.cost_per_hour_specialist,
+              Ts: row.time_taken_per_consult,
+              Rr: row.referral_reduction_rate,
+              Pd: row.diabetes_mellitus_prevalence_rate,
+              Pvt: row.vtdr_prevalence_rate_among_diabetics,
+              Vt: row.average_treatment_value_per_vtdr,
+              gamma: row.dai
+            };
+          });
+          this.inputParams = formatted;
+        } catch (error) {
+          console.error("Failed to fetch country parameters:", error);
+        }
       }
+    },
+    mounted() {
+      this.fetchInputParams();
     }
   };
   </script>
