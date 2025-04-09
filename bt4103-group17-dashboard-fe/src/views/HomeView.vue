@@ -3,10 +3,10 @@
     <h1>Welcome to the Home View!</h1>
 
     <div class="dashboard-grid">
-      <DashboardCard icon="🧪" title="Total Kits Sold" value="12,450" />
-      <DashboardCard icon="🏥" title="Hospitals Partnered" value="215" />
+      <DashboardCard icon="🧪" title="Total Screenings done" :value=totalScreenings />
+      <DashboardCard icon="🏥" title="Hospitals Partnered" :value=hospitalsPartnered />
       <DashboardCard icon="💰" title="Total Revenue" value="$3.8M" />
-      <DashboardCard icon="👨‍⚕️" title="Patients Treated" value="18,730" />
+      <DashboardCard icon="👨‍⚕️" title="Patients Treated" :value=patientsScreened />
     </div>
 
     <div class="highlights-box">
@@ -21,7 +21,30 @@
 </template>
 
 <script setup>
-  import DashboardCard from '@/components/DashboardCard.vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import DashboardCard from '@/components/DashboardCard.vue'
+
+
+const hospitalsPartnered = ref(0)
+const patientsScreened = ref(0)
+const totalScreenings = ref(0)
+const fetchStatistics = async () => {
+  try {
+    const providersResponse = await axios.get('https://bt4103-group17-dashboard-flask-be.onrender.com/providers/total_worked_with')
+    const patientsResponse = await axios.get('https://bt4103-group17-dashboard-flask-be.onrender.com/screenings/total_patients_screened')
+    const screeningsResponse = await axios.get('https://bt4103-group17-dashboard-flask-be.onrender.com/screenings/total_screenings')
+    hospitalsPartnered.value = providersResponse.data.total_providers_worked_with
+    patientsScreened.value = patientsResponse.data.unique_patient_count
+    totalScreenings.value = screeningsResponse.data.total_screenings
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(() => {
+  fetchStatistics()
+})
 </script>
 
 <style scoped>
