@@ -8,13 +8,16 @@
     </div>
 </template>
   
-<script setup>
-defineProps({
-icon: String,
-title: String,
-value: String
-})
+<script>
+export default {
+  props: {
+    icon: String,
+    title: String,
+    value: String
+  }
+}
 </script>
+
   
 <style scoped>
 .dashboard-card {

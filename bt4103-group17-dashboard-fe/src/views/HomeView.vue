@@ -11,11 +11,11 @@
 
     <div class="highlights-box">
       <h2>📌 Recent Highlights</h2>
-      <ul>
+
         <li>📝 Signed 3 new hospitals in Q2</li>
         <li>🚚 Shipped 1,200 kits to Jakarta</li>
         <li>📈 Revenue increased by 8% in March</li>
-      </ul>
+
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@
 
 <style scoped>
   .home-view {
-    padding: 32px;
+
     background-color: #f5f5f5;
     min-height: 100vh;
   }
