@@ -1,7 +1,17 @@
 <template>
-  <div>
-    <h2>Country-Wise Market Analysis: Diabetic Population, GDP per Capita (PPP), Digital Adoption Index</h2>
-    <canvas id="marketBubbleChart"></canvas>
+  <div class="market-view">
+    <h2>
+      Country-Wise Market Analysis: Diabetic Population, GDP per Capita (PPP), Digital Adoption Index
+    </h2>
+
+    <!-- Show spinner while loading -->
+    <div v-if="loading" class="spinner-wrapper">
+      <div class="spinner"></div>
+      <p>Loading Chart...</p>
+    </div>
+
+    <!-- Show chart when loaded -->
+    <canvas v-show="!loading" id="marketBubbleChart"></canvas>
   </div>
 </template>
 
@@ -18,6 +28,7 @@ export default {
   data() {
     return {
       chart: null,
+      loading: true, 
       colorMap: {
         Singapore: '#4CAF50',
         Malaysia: '#2196F3',
@@ -42,8 +53,7 @@ export default {
         const ctx = document.getElementById("marketBubbleChart");
         if (!ctx) return;
 
-        // Reorder countries to bring Vietnam to the front (last in array)
-        const countryOrder = ['Singapore', 'Malaysia', 'Thailand', 'Indonesia', 'Vietnam'];
+        const countryOrder = ['Vietnam', 'Indonesia', 'Thailand', 'Malaysia', 'Singapore'];
 
         const datasets = countryOrder.map((countryName) => {
           const country = data.find(c => c.country === countryName);
@@ -162,6 +172,8 @@ export default {
 
       } catch (error) {
         console.error("Failed to load chart data:", error);
+      } finally {
+        this.loading = false;
       }
     }
   },
@@ -174,5 +186,36 @@ export default {
 <style scoped>
 canvas {
   max-width: 100%;
+}
+
+.market-view {
+  padding: 24px;
+}
+
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  background-color: #ffffffcc;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #eee;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
