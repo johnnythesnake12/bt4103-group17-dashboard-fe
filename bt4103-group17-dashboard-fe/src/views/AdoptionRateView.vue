@@ -1,6 +1,9 @@
 <template>
     <div class="adoption-rate-container">
-      <h1>Regional Kit Adoption Rates</h1>
+      <h1 class="section-header">
+        Regional Kit Adoption Rates
+        <TooltipInfo text="(Number of New Active Users / Total Sign-ups or Total Users) * 100" />
+      </h1>
       <div class="chart-wrapper">
         <canvas 
           v-if="loaded" 
@@ -14,6 +17,7 @@
   
   <script>
   import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement } from 'chart.js'
+  import TooltipInfo from '@/components/TooltipInfo.vue'
   
   ChartJS.register(
     Title, Tooltip, Legend, LineElement, LinearScale, CategoryScale, PointElement
@@ -21,6 +25,9 @@
   
   export default {
     name: 'AdoptionRateView',
+    components: {
+    TooltipInfo, 
+    },
     data() {
       return {
         loaded: false,

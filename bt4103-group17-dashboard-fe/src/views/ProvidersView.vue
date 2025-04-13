@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1>Healthcare Providers</h1>
+    <h1 class="section-header">
+      Healthcare Providers
+      <TooltipInfo text="This view shows all medical facilities onboarded into the system and their current negotiation or onboarding stage." />
+    </h1>
     <v-text-field
       v-model="search"
       label="Search Providers"
@@ -22,6 +25,7 @@
 
 <script>
 import axios from 'axios';
+import TooltipInfo from '@/components/TooltipInfo.vue'
 import { Chart } from 'chart.js/auto';
 import { FunnelController, TrapezoidElement } from 'chartjs-chart-funnel';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -30,6 +34,9 @@ Chart.register(FunnelController, TrapezoidElement);
 
 export default {
   name: "ProvidersView",
+  components: {
+    TooltipInfo, 
+  },
   data() {
     return {
       search: "",
