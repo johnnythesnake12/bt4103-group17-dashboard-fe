@@ -25,8 +25,8 @@
       return {
         items: [
           { text: "Home", icon: "mdi-home", route: "/" },
-          { text: "Market Analysis", icon: "mdi-chart-bubble", route: "/marketanalysis" },
           { text: "Financial Performance", icon: "mdi-cash", route: "/financial" },
+          { text: "Market Analysis", icon: "mdi-chart-bubble", route: "/marketanalysis" },
           { text: "Market Adoption", icon: "mdi-chart-line", route: "/adoptionrate" },
           // { text: "Map", icon: "mdi-map-marker", route: "/map" },
           { text: "Providers", icon: "mdi-hospital-building", route: "/providers" }
